@@ -4,6 +4,7 @@ import Testimonials from "./Testimonials";
 import { newArrivals, bestSellers } from "../../data/products";
 import FeaturedCategories from "./FeaturedCategories";
 import InstagramGallery from "./InstagramGallery";
+import Newsletter from "./Newsletter";
 const Home = () => {
   return (
     <>
@@ -65,6 +66,7 @@ const Home = () => {
         products={bestSellers}
       />
       <InstagramGallery />
+      <Newsletter />
     </>
   );
 };

@@ -16,8 +16,8 @@ const ProductCard = ({ product }) => {
     )
   );
 
-  const imageUrl = (image) =>
-    `https://images.unsplash.com/${image}?auto=format&fit=crop&w=700&q=85`;
+ const imageUrl = (image) =>
+  `https://images.unsplash.com/${image}?auto=format&fit=crop&w=700&q=85`;
 
   const toggleWishlist = () => {
     const wishlist = getStorage("lumiere_wishlist", []);

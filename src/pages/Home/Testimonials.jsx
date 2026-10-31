@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { FiStar, FiMessageSquare } from "react-icons/fi";
 
@@ -13,7 +12,7 @@ const reviews = [
     name: "Olivia Martin",
     location: "London, UK",
     review:
-      "LUMIÈRE has become my favorite fashion store. The packaging, quality and overall experience were amazing.",
+      "Shifa-fashion has become my favorite fashion store. The packaging, quality and overall experience were amazing.",
   },
   {
     name: "Emma Anderson",
@@ -27,7 +26,6 @@ function Testimonials() {
   return (
     <section className="bg-[#F8F5F0] py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-5 md:px-10">
-
         {/* Section Heading */}
         <div className="mb-14 text-center">
           <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[#b18b6b]">
@@ -60,11 +58,7 @@ function Testimonials() {
               {/* Stars */}
               <div className="mb-5 flex gap-1 text-[#C8A98B]">
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <FiStar
-                    key={star}
-                    fill="currentColor"
-                    size={15}
-                  />
+                  <FiStar key={star} fill="currentColor" size={15} />
                 ))}
               </div>
 
@@ -75,18 +69,13 @@ function Testimonials() {
 
               {/* Customer */}
               <div className="border-t border-gray-100 pt-5">
-                <h3 className="font-medium text-[#171717]">
-                  {item.name}
-                </h3>
+                <h3 className="font-medium text-[#171717]">{item.name}</h3>
 
-                <p className="mt-1 text-xs text-gray-400">
-                  {item.location}
-                </p>
+                <p className="mt-1 text-xs text-gray-400">{item.location}</p>
               </div>
             </motion.div>
           ))}
         </div>
-
       </div>
     </section>
   );

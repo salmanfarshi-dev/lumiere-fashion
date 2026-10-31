@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { FiInstagram } from "react-icons/fi";
 
@@ -23,7 +22,7 @@ function InstagramGallery() {
           </p>
 
           <h2 className="font-serif text-3xl md:text-5xl text-[#171717]">
-            Style With LUMIÈRE
+            Style With Shifa-fashion
           </h2>
 
           <p className="text-sm text-gray-500 mt-4">

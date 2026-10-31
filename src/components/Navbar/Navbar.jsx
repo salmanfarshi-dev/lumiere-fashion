@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
   FiSearch,
@@ -11,39 +10,59 @@ import {
   FiChevronDown,
 } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
+import { getStorage } from "../../utils/localStorage";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
+  const [cartCount, setCartCount] = useState(() => {
+    const cart = getStorage("lumiere_cart", []);
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  });
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = getStorage("lumiere_cart", []);
+
+      const count = cart.reduce((total, item) => total + item.quantity, 0);
+
+      setCartCount(count);
+    };
+
+    window.addEventListener("lumiere-storage", updateCartCount);
+    window.addEventListener("storage", updateCartCount);
+
+    return () => {
+      window.removeEventListener("lumiere-storage", updateCartCount);
+      window.removeEventListener("storage", updateCartCount);
+    };
+  }, []);
+
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Shop", path: "/shop" },
-    { name: "New Arrivals", path: "/category/new-arrivals" },
-    { name: "Collections", path: "/category/collections" },
+    { name: "New Arrivals", path: "/new-arrivals" },
+    { name: "Collections", path: "/collections" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
   ];
 
   const linkClass = ({ isActive }) =>
     `text-[11px] uppercase tracking-[0.16em] transition-colors duration-300 ${
-      isActive
-        ? "text-[#C8A98B]"
-        : "text-[#333] hover:text-[#C8A98B]"
+      isActive ? "text-[#C8A98B]" : "text-[#333] hover:text-[#C8A98B]"
     }`;
 
   return (
     <>
       {/* Announcement Bar */}
       <div className="bg-[#171717] px-4 py-2 text-center text-[9px] tracking-[0.2em] text-white sm:text-[10px]">
-        COMPLIMENTARY SHIPPING ON ORDERS OVER $100
+        COMPLIMENTARY SHIPPING ON ORDERS OVER ৳5,000
       </div>
 
       {/* Main Navbar */}
       <header className="sticky top-0 z-50 border-b border-neutral-100 bg-white/95 backdrop-blur-md">
-
         <div className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
-
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMenuOpen(true)}
@@ -56,11 +75,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <nav className="hidden items-center gap-7 lg:flex">
             {navLinks.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.path}
-                className={linkClass}
-              >
+              <NavLink key={link.name} to={link.path} className={linkClass}>
                 {link.name}
               </NavLink>
             ))}
@@ -71,12 +86,12 @@ const Navbar = () => {
             to="/"
             className="absolute left-1/2 -translate-x-1/2 text-2xl font-serif tracking-[0.18em] text-[#171717] sm:text-3xl"
           >
-            LUMIÈRE
+            Shifa
           </Link>
 
           {/* Navbar Actions */}
           <div className="ml-auto flex items-center gap-4 sm:gap-6">
-
+            {/* Search */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
               className="text-lg transition hover:text-[#C8A98B]"
@@ -85,6 +100,7 @@ const Navbar = () => {
               <FiSearch />
             </button>
 
+            {/* Wishlist */}
             <Link
               to="/wishlist"
               className="hidden text-lg transition hover:text-[#C8A98B] sm:block"
@@ -93,6 +109,7 @@ const Navbar = () => {
               <FiHeart />
             </Link>
 
+            {/* Account */}
             <Link
               to="/account"
               className="hidden text-lg transition hover:text-[#C8A98B] sm:block"
@@ -101,17 +118,20 @@ const Navbar = () => {
               <FiUser />
             </Link>
 
+            {/* Shopping Cart */}
             <Link
               to="/cart"
               className="relative text-lg transition hover:text-[#C8A98B]"
-              aria-label="Shopping cart"
+              aria-label={`Shopping cart, ${cartCount} items`}
             >
               <FiShoppingBag />
-              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#C8A98B] text-[9px] text-white">
-                0
-              </span>
-            </Link>
 
+              {cartCount > 0 && (
+                <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#C8A98B] px-1 text-[9px] text-white">
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
+            </Link>
           </div>
         </div>
 
@@ -127,7 +147,9 @@ const Navbar = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+
                   const query = e.currentTarget.elements.search.value;
+
                   window.location.href = `/shop?search=${encodeURIComponent(query)}`;
                 }}
                 className="mx-auto flex max-w-2xl items-center gap-3 px-5 py-5"
@@ -142,14 +164,16 @@ const Navbar = () => {
                   autoFocus
                 />
 
-                <button type="submit" className="text-xs uppercase tracking-widest">
+                <button
+                  type="submit"
+                  className="text-xs uppercase tracking-widest"
+                >
                   Search
                 </button>
               </form>
             </motion.div>
           )}
         </AnimatePresence>
-
       </header>
 
       {/* Mobile Navigation Drawer */}
@@ -171,14 +195,13 @@ const Navbar = () => {
               transition={{ duration: 0.3 }}
               className="fixed left-0 top-0 z-[70] flex h-full w-[85%] max-w-sm flex-col bg-white p-7"
             >
-
               <div className="mb-12 flex items-center justify-between">
                 <Link
                   to="/"
                   onClick={() => setMenuOpen(false)}
                   className="font-serif text-2xl tracking-[0.15em]"
                 >
-                  LUMIÈRE
+                  Shifa-fashion
                 </Link>
 
                 <button
@@ -211,15 +234,37 @@ const Navbar = () => {
               </nav>
 
               <div className="mt-auto flex gap-6 border-t border-neutral-100 pt-6">
-                <Link to="/wishlist" onClick={() => setMenuOpen(false)}>
+                <Link
+                  to="/wishlist"
+                  onClick={() => setMenuOpen(false)}
+                  aria-label="Wishlist"
+                >
                   <FiHeart className="text-xl" />
                 </Link>
 
-                <Link to="/account" onClick={() => setMenuOpen(false)}>
+                <Link
+                  to="/account"
+                  onClick={() => setMenuOpen(false)}
+                  aria-label="My account"
+                >
                   <FiUser className="text-xl" />
                 </Link>
-              </div>
 
+                <Link
+                  to="/cart"
+                  onClick={() => setMenuOpen(false)}
+                  className="relative"
+                  aria-label="Shopping cart"
+                >
+                  <FiShoppingBag className="text-xl" />
+
+                  {cartCount > 0 && (
+                    <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#C8A98B] px-1 text-[9px] text-white">
+                      {cartCount > 99 ? "99+" : cartCount}
+                    </span>
+                  )}
+                </Link>
+              </div>
             </motion.div>
           </>
         )}

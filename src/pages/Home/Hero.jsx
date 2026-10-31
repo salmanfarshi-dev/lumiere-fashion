@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FiArrowUpRight } from "react-icons/fi";
@@ -32,21 +31,21 @@ function Hero() {
           </h1>
 
           <p className="text-sm md:text-base text-white/90 leading-7 max-w-md mb-9">
-            Discover timeless fashion designed to make every moment
-            effortlessly beautiful. Find your style with LUMIÈRE.
+            Discover timeless fashion designed to make every moment effortlessly
+            beautiful. Find your style with Shifa-fashion.
           </p>
 
           <div className="flex flex-wrap gap-4">
             <Link
               to="/shop"
-              className="inline-flex items-center gap-3 bg-white text-black px-7 py-4 text-xs tracking-widest uppercase hover:bg-[#c8a98b] transition"
+              className="inline-flex items-center gap-3 bg-white text-black! px-7 py-4 text-xs tracking-widest uppercase hover:bg-[#c8a98b] hover:text-white! transition"
             >
               Shop Collection <FiArrowUpRight size={18} />
             </Link>
 
             <Link
               to="/shop"
-              className="inline-flex items-center gap-3 border border-white px-7 py-4 text-xs tracking-widest uppercase hover:bg-white hover:text-black transition"
+              className="inline-flex items-center gap-3 border border-white px-7 py-4 text-xs tracking-widest uppercase hover:bg-white hover:text-black! transition"
             >
               Explore More <FiArrowUpRight size={18} />
             </Link>
